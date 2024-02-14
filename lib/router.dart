@@ -36,7 +36,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (context) {
           return const Scaffold(
             body: Center(
-              child: Text('Screen does not exist'),
+              child: Text('Screen does not exist.'),
             ),
           );
         },
