@@ -5,7 +5,6 @@ import 'package:amazon_clone_tutorial/features/auth/screens/auth_screen.dart';
 
 import 'package:amazon_clone_tutorial/features/home/screens/home_screen.dart';
 
-import 'package:amazon_clone_tutorial/models/product.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
