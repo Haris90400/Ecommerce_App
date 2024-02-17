@@ -1,22 +1,45 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amazon_clone_tutorial/common/widgets/loader.dart';
 import 'package:amazon_clone_tutorial/constants/global_variables.dart';
 import 'package:amazon_clone_tutorial/features/home/widgets/address_box.dart';
-import 'package:amazon_clone_tutorial/features/home/widgets/carousel_image.dart';
-import 'package:amazon_clone_tutorial/features/home/widgets/deal_of_day.dart';
-import 'package:amazon_clone_tutorial/features/home/widgets/top_categories.dart';
-import 'package:amazon_clone_tutorial/features/search/screens/search_screen.dart';
+import 'package:amazon_clone_tutorial/features/search/services/search_services.dart';
+import 'package:amazon_clone_tutorial/features/search/widgets/searched_product.dart';
+import 'package:amazon_clone_tutorial/models/product.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = '/home';
-  const HomeScreen({Key? key}) : super(key: key);
+class SearchScreen extends StatefulWidget {
+  static const String routeName = '/search-screen';
+  final String query;
+  const SearchScreen({
+    Key? key,
+    required this.query,
+  }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SearchScreenState extends State<SearchScreen> {
+  List<Product>? productList;
+
   void navigateToSearchScreen(String query) {
     Navigator.of(context).pushNamed(SearchScreen.routeName, arguments: query);
+  }
+
+  final SearchServices searchServices = SearchServices();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchSearchProducts();
+  }
+
+  fetchSearchProducts() async {
+    productList = await searchServices.fetchSearchProducts(
+      context: context,
+      searchQuery: widget.query,
+    );
+    setState(() {});
   }
 
   @override
@@ -98,18 +121,24 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            AddressBox(),
-            SizedBox(height: 10),
-            TopCategories(),
-            SizedBox(height: 10),
-            CarouselImage(),
-            DealOfDay(),
-          ],
-        ),
-      ),
+      body: productList == null
+          ? const Loader()
+          : Column(
+              children: [
+                const AddressBox(),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: productList!.length,
+                    itemBuilder: (context, index) {
+                      return SearchedProduct(
+                        product: productList![index],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
