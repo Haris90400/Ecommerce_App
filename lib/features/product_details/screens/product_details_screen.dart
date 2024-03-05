@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:amazon_clone_tutorial/common/widgets/custom_button.dart';
 import 'package:amazon_clone_tutorial/common/widgets/stars.dart';
+import 'package:amazon_clone_tutorial/features/product_details/services/product_details_services.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final ProductDetailsScrevices _productDetailsScrevices =
+      ProductDetailsScrevices();
   void navigateToSearchScreen(String query) {
     Navigator.of(context).pushNamed(SearchScreen.routeName, arguments: query);
   }
@@ -231,7 +234,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: GlobalVariables.secondaryColor,
                 );
               },
-              onRatingUpdate: (rating) {},
+              onRatingUpdate: (rating) {
+                _productDetailsScrevices.rateProduct(
+                  context: context,
+                  product: widget.product,
+                  rating: rating,
+                );
+              },
             )
           ],
         ),

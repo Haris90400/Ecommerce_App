@@ -15,6 +15,7 @@ class ProductDetailsScrevices {
     required Product product,
     required double rating,
   }) async {
+    print("Function Triggered");
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
@@ -27,6 +28,7 @@ class ProductDetailsScrevices {
             'id': product.id,
             'rating': rating,
           }));
+      print(res.statusCode);
 
       httpErrorHandle(
         response: res,
@@ -35,6 +37,7 @@ class ProductDetailsScrevices {
       );
     } catch (e) {
       showSnackBar(context, e.toString());
+      print(e);
     }
   }
 }
